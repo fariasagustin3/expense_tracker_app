@@ -1,4 +1,4 @@
-package com.agustin.server.dtos;
+package com.agustin.server.dtos.responses;
 
 import lombok.*;
 

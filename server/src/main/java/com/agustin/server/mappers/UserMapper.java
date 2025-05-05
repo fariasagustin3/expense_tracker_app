@@ -1,7 +1,7 @@
 package com.agustin.server.mappers;
 
 import com.agustin.server.domain.entities.User;
-import com.agustin.server.dtos.UserDTO;
+import com.agustin.server.dtos.responses.UserDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
