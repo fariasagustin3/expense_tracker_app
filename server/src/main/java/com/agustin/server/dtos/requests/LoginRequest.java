@@ -2,15 +2,12 @@ package com.agustin.server.dtos.requests;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@EqualsAndHashCode
-@ToString
 public class LoginRequest {
 
-    private String email;
-    private String password;
+    String email;
+    String password;
 }

@@ -9,9 +9,4 @@ import java.util.List;
 public interface UserService {
 
     List<UserDTO> getAllUsers();
-   //UserDTO getUserById(UUID userId);
-   UserDTO createUser(User user);
-   UserDTO loginUser(LoginRequest loginRequest);
-   //UserDTO updateUser(UUID userId, User user);
-   //void deleteUser(UUID userId);
 }
