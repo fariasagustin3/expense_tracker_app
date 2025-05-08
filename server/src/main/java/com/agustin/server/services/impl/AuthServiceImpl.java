@@ -26,7 +26,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        UserDetails user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        UserDetails user = userRepository.findByEmail(request.getEmail()).orElseThrow(() ->
+                new IllegalArgumentException("User not found")
+        );
         String token = jwtService.getToken(user);
         return AuthResponse.builder()
                 .token(token)
@@ -35,6 +37,10 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse register(RegisterRequest request) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email is already in use");
+        }
+
         User user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
