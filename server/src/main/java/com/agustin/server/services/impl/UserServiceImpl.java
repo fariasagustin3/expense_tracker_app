@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +26,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream().map(userMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDTO getProfile(UUID id) {
+        Optional<User> user = userRepository.findById(id);
+
+        if(user.isEmpty()) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        return userMapper.toDto(user.get());
+
     }
 }
 
