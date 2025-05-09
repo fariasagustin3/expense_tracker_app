@@ -105,4 +105,19 @@ public class UserControllerTest {
         assertEquals(errorMessage, exception.getMessage());
         verify(userService, times(1)).updateUser(userId, userRequest);
     }
+
+    @Test
+    @DisplayName("Should return success message when deleteUser is called with valid ID")
+    void deleteUser_ValidId_ReturnsSuccessMessage() {
+        // arrange
+        String successMessage = "User deleted successfully.";
+        when(userService.deleteUser(userId)).thenReturn(successMessage);
+
+        // act
+        String result = userController.deleteUser(userId);
+
+        // assert
+        assertEquals(successMessage, result);
+        verify(userService, times(1)).deleteUser(userId);
+    }
 }

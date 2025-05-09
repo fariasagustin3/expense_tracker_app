@@ -149,4 +149,32 @@ public class UserServiceImplTest {
         verify(userRepository, never()).save(any(User.class));
         verify(userMapper, never()).toDto(any());
     }
+
+    @Test
+    @DisplayName("Should delete user and return success message when user exists")
+    void deleteUserSuccessfullyAndReturnMessage() {
+        // arrange
+        doNothing().when(userRepository).deleteById(userId);
+
+        // act
+        String result = userService.deleteUser(userId);
+
+        // assert
+        assertEquals("User deleted successfully.", result);
+        verify(userRepository, times(1)).deleteById(userId);
+    }
+
+    @Test
+    @DisplayName("Should throw IllegalArgumentException when id is null in deleteUser")
+    void throwsExceptionWhenIdIsNull() {
+        // act & assert
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> userService.deleteUser(null)
+        );
+
+        assertEquals("ID must be provided", exception.getMessage());
+        verify(userRepository, never()).existsById(any());
+        verify(userRepository, never()).deleteById(any());
+    }
 }
