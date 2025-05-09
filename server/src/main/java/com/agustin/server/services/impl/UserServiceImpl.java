@@ -59,5 +59,15 @@ public class UserServiceImpl implements UserService {
 
         return userMapper.toDto(newUser);
     }
+
+    @Override
+    public String deleteUser(UUID id) {
+        if(id == null) {
+            throw new IllegalArgumentException("ID must be provided");
+        }
+
+        userRepository.deleteById(id);
+        return "User deleted successfully.";
+    }
 }
 

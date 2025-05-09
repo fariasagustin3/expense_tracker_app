@@ -37,4 +37,9 @@ public class UserController {
             throw new IllegalArgumentException(ex.getMessage());
         }
     }
+
+    @DeleteMapping(path = "/{id}/delete")
+    public String deleteUser(@PathVariable UUID id) {
+        return userService.deleteUser(id);
+    }
 }
