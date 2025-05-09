@@ -2,6 +2,7 @@ package com.agustin.server.services.impl;
 
 import com.agustin.server.domain.entities.User;
 import com.agustin.server.dtos.requests.LoginRequest;
+import com.agustin.server.dtos.requests.UserRequest;
 import com.agustin.server.dtos.responses.UserDTO;
 import com.agustin.server.mappers.UserMapper;
 import com.agustin.server.repositories.UserRepository;
@@ -38,6 +39,25 @@ public class UserServiceImpl implements UserService {
 
         return userMapper.toDto(user.get());
 
+    }
+
+    @Override
+    public UserDTO updateUser(UUID id, UserRequest request) {
+        Optional<User> user = userRepository.findById(id);
+
+        if(user.isEmpty()) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        User savedUser = user.get();
+
+        savedUser.setFirstName(request.getFirstName());
+        savedUser.setLastName(request.getLastName());
+        savedUser.setEmail(request.getEmail());
+
+        User newUser = userRepository.save(savedUser);
+
+        return userMapper.toDto(newUser);
     }
 }
 
