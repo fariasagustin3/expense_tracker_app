@@ -96,4 +96,57 @@ public class UserServiceImplTest {
         verify(userRepository, times(1)).findById(userId);
         verify(userMapper, never()).toDto(any());
     }
+
+    @Test
+    @DisplayName("Should update user and return UserDTO when user exists")
+    void updateUserAndReturnUserDTO() {
+        // arrange
+        User updatedUser = new User();
+        updatedUser.setId(userId);
+        updatedUser.setFirstName("Jane");
+        updatedUser.setLastName("Smith");
+        updatedUser.setEmail("jane.smith@example.com");
+
+        UserDTO updatedUserDTO = new UserDTO();
+        updatedUserDTO.setId(userId);
+        updatedUserDTO.setFirstName("Jane");
+        updatedUserDTO.setLastName("Smith");
+        updatedUserDTO.setEmail("jane.smith@example.com");
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.save(any(User.class))).thenReturn(updatedUser);
+        when(userMapper.toDto(updatedUser)).thenReturn(updatedUserDTO);
+
+        // act
+        UserDTO result = userService.updateUser(userId, userRequest);
+
+        // assert
+        assertNotNull(result);
+        assertEquals(userId, result.getId());
+        assertEquals("Jane", result.getFirstName());
+        assertEquals("Smith", result.getLastName());
+        assertEquals("jane.smith@example.com", result.getEmail());
+
+        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).save(any(User.class));
+        verify(userMapper, times(1)).toDto(updatedUser);
+    }
+
+    @Test
+    @DisplayName("Should throw IllegalArgumentException when user not found in updateUser")
+    void throwExceptionIfUserDoesNotExist() {
+        // arrange
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        // act & assert
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> userService.updateUser(userId, userRequest)
+        );
+
+        assertEquals("User not found", exception.getMessage());
+        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, never()).save(any(User.class));
+        verify(userMapper, never()).toDto(any());
+    }
 }
