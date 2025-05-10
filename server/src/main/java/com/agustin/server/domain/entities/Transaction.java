@@ -17,6 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
+@Builder
 public class Transaction {
 
     @Id
@@ -29,7 +30,6 @@ public class Transaction {
     @Column(nullable = false)
     private BigDecimal amount;
 
-    @Column(nullable = false)
     private Type type;
 
     @Column(name = "created_at", nullable = false)

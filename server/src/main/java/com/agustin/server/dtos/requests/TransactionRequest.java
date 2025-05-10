@@ -1,4 +1,4 @@
-package com.agustin.server.dtos.responses;
+package com.agustin.server.dtos.requests;
 
 import com.agustin.server.domain.enums.Type;
 import lombok.AllArgsConstructor;
@@ -6,17 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class TransactionDTO {
-    private UUID id;
+@AllArgsConstructor
+public class TransactionRequest {
     private String title;
     private BigDecimal amount;
     private Type type;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

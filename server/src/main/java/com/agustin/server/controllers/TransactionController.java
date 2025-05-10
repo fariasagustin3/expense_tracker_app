@@ -1,15 +1,15 @@
 package com.agustin.server.controllers;
 
+import com.agustin.server.dtos.requests.TransactionRequest;
 import com.agustin.server.dtos.responses.TransactionDTO;
 import com.agustin.server.services.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/api/v1/transactions")
@@ -24,6 +24,25 @@ public class TransactionController {
 
         try {
             return ResponseEntity.status(HttpStatus.OK).body(transactions);
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException(ex.getMessage());
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<TransactionDTO> createTransaction(@RequestBody TransactionRequest request) {
+        System.out.println(request);
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(transactionService.createTransaction(request));
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException(ex.getMessage());
+        }
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<TransactionDTO> getTransaction(@PathVariable UUID id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(transactionService.getTransaction(id));
         } catch (IllegalArgumentException ex) {
             throw new IllegalArgumentException(ex.getMessage());
         }
