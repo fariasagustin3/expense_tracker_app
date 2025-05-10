@@ -1,5 +1,6 @@
 package com.agustin.server.domain.entities;
 
+import com.agustin.server.domain.enums.Type;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
