@@ -14,4 +14,5 @@ public class TransactionRequest {
     private String title;
     private BigDecimal amount;
     private Type type;
+    private String description;
 }

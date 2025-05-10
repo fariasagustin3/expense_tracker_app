@@ -47,4 +47,16 @@ public class TransactionController {
             throw new IllegalArgumentException(ex.getMessage());
         }
     }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<TransactionDTO> updateTransaction(
+            @PathVariable UUID id,
+            @RequestBody TransactionRequest request
+    ) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(transactionService.updateTransaction(id, request));
+        } catch(IllegalArgumentException ex) {
+            throw new IllegalArgumentException(ex.getMessage());
+        }
+    }
 }

@@ -30,6 +30,8 @@ public class Transaction {
     @Column(nullable = false)
     private BigDecimal amount;
 
+    private String description;
+
     private Type type;
 
     @Column(name = "created_at", nullable = false)

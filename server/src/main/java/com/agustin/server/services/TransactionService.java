@@ -10,4 +10,5 @@ public interface TransactionService {
     List<TransactionDTO> listTransactions();
     TransactionDTO createTransaction(TransactionRequest transactionRequest);
     TransactionDTO getTransaction(UUID id);
+    TransactionDTO updateTransaction(UUID id, TransactionRequest request);
 }

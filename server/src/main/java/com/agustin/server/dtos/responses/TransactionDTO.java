@@ -16,6 +16,7 @@ public class TransactionDTO {
     private UUID id;
     private String title;
     private BigDecimal amount;
+    private String description;
     private Type type;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

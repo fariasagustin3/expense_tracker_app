@@ -33,6 +33,7 @@ public class TransactionServiceImpl implements TransactionService {
                 .title(transactionRequest.getTitle())
                 .amount(transactionRequest.getAmount())
                 .type(transactionRequest.getType())
+                .description(transactionRequest.getDescription())
                 .build();
 
         Transaction transactionSaved = transactionRepository.save(transaction);
@@ -53,5 +54,28 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         return transactionMapper.toDTO(transaction.get());
+    }
+
+    @Override
+    public TransactionDTO updateTransaction(UUID id, TransactionRequest request) {
+        if(id == null) {
+            throw new IllegalArgumentException("ID must be provided");
+        }
+
+        Optional<Transaction> transactionSaved = transactionRepository.findById(id);
+
+        if(transactionSaved.isEmpty()) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        Transaction transaction = transactionSaved.get();
+
+        transaction.setTitle(request.getTitle());
+        transaction.setAmount(request.getAmount());
+        transaction.setType(request.getType());
+        transaction.setDescription(request.getDescription());
+
+        transactionRepository.save(transaction);
+        return transactionMapper.toDTO(transaction);
     }
 }
