@@ -78,4 +78,10 @@ public class TransactionServiceImpl implements TransactionService {
         transactionRepository.save(transaction);
         return transactionMapper.toDTO(transaction);
     }
+
+    @Override
+    public String deleteTransaction(UUID id) {
+        transactionRepository.deleteById(id);
+        return "Transaction deleted successfully";
+    }
 }

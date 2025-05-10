@@ -59,4 +59,9 @@ public class TransactionController {
             throw new IllegalArgumentException(ex.getMessage());
         }
     }
+
+    @DeleteMapping(path = "/{id}")
+    public String deleteTransaction(@PathVariable UUID id) {
+        return transactionService.deleteTransaction(id);
+    }
 }

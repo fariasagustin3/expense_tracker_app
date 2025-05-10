@@ -11,4 +11,5 @@ public interface TransactionService {
     TransactionDTO createTransaction(TransactionRequest transactionRequest);
     TransactionDTO getTransaction(UUID id);
     TransactionDTO updateTransaction(UUID id, TransactionRequest request);
+    String deleteTransaction(UUID id);
 }
