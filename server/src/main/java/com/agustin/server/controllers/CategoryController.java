@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/api/v1/categories")
@@ -29,5 +30,10 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.createCategory(request));
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable UUID id) {
+        return ResponseEntity.status(HttpStatus.OK).body(categoryService.getCategoryById(id));
     }
 }
