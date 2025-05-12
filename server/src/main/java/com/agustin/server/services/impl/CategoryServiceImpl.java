@@ -76,4 +76,15 @@ public class CategoryServiceImpl implements CategoryService {
 
         return categoryMapper.toDTO(updatedCategory);
     }
+
+    @Override
+    public String deleteCategory(UUID id) {
+        if(id == null) {
+            throw new IllegalArgumentException("ID must be provided");
+        }
+
+        categoryRepository.deleteById(id);
+
+        return "Category deleted successfully";
+    }
 }

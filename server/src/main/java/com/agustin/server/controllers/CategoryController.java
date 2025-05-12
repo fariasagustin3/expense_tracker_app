@@ -44,4 +44,9 @@ public class CategoryController {
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.updateCategory(id, request));
     }
+
+    @DeleteMapping(path = "/{id}")
+    public String deleteCategory(@PathVariable UUID id) {
+        return categoryService.deleteCategory(id);
+    }
 }
