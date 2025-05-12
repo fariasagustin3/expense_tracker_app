@@ -10,4 +10,5 @@ public interface CategoryService {
     List<CategoryDTO> listCategories();
     CategoryDTO createCategory(CategoryRequest request);
     CategoryDTO getCategoryById(UUID id);
+    CategoryDTO updateCategory(UUID id, CategoryRequest request);
 }

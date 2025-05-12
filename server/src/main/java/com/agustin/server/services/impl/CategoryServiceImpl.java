@@ -53,4 +53,27 @@ public class CategoryServiceImpl implements CategoryService {
 
         return categoryMapper.toDTO(categorySaved.get());
     }
+
+    @Override
+    public CategoryDTO updateCategory(UUID id, CategoryRequest request) {
+        if(id == null) {
+            throw new IllegalArgumentException("ID must be provided");
+        }
+
+        Optional<Category> categorySaved = categoryRepository.findById(id);
+
+        if(categorySaved.isEmpty()) {
+            throw new IllegalArgumentException("Category not found");
+        }
+
+        Category updatedCategory = categorySaved.get();
+
+        updatedCategory.setName(request.getName());
+        updatedCategory.setColor(request.getColor());
+        updatedCategory.setIsDefault(request.getIsDefault());
+
+        categoryRepository.save(updatedCategory);
+
+        return categoryMapper.toDTO(updatedCategory);
+    }
 }
