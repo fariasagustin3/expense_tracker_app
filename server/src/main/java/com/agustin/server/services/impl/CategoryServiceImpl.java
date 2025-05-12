@@ -1,11 +1,13 @@
 package com.agustin.server.services.impl;
 
 import com.agustin.server.domain.entities.Category;
+import com.agustin.server.domain.entities.User;
 import com.agustin.server.dtos.requests.CategoryRequest;
 import com.agustin.server.dtos.responses.CategoryDTO;
 import com.agustin.server.mappers.CategoryMapper;
 import com.agustin.server.repositories.CategoryRepository;
 import com.agustin.server.services.CategoryService;
+import com.agustin.server.util.AuthenticatedUserProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
+    private final AuthenticatedUserProvider authenticatedUserProvider;
 
     @Override
     public List<CategoryDTO> listCategories() {
@@ -28,10 +31,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO createCategory(CategoryRequest request) {
+        User user = authenticatedUserProvider.getAuthenticatedUser();
+
         Category categoryCreated = Category.builder()
                 .name(request.getName())
                 .color(request.getColor())
                 .isDefault(request.getIsDefault())
+                .user(user)
                 .build();
 
         Category category = categoryRepository.save(categoryCreated);
@@ -56,6 +62,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO updateCategory(UUID id, CategoryRequest request) {
+        User user = authenticatedUserProvider.getAuthenticatedUser();
+
         if(id == null) {
             throw new IllegalArgumentException("ID must be provided");
         }
@@ -68,9 +76,14 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category updatedCategory = categorySaved.get();
 
+        if(!updatedCategory.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("Unauthorized to update this category");
+        }
+
         updatedCategory.setName(request.getName());
         updatedCategory.setColor(request.getColor());
         updatedCategory.setIsDefault(request.getIsDefault());
+        updatedCategory.setUser(user);
 
         categoryRepository.save(updatedCategory);
 

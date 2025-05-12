@@ -1,11 +1,15 @@
 package com.agustin.server.services.impl;
 
+import com.agustin.server.domain.entities.Category;
 import com.agustin.server.domain.entities.Transaction;
+import com.agustin.server.domain.entities.User;
 import com.agustin.server.dtos.requests.TransactionRequest;
 import com.agustin.server.dtos.responses.TransactionDTO;
 import com.agustin.server.mappers.TransactionMapper;
+import com.agustin.server.repositories.CategoryRepository;
 import com.agustin.server.repositories.TransactionRepository;
 import com.agustin.server.services.TransactionService;
+import com.agustin.server.util.AuthenticatedUserProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +25,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final TransactionMapper transactionMapper;
+    private final AuthenticatedUserProvider authenticatedUserProvider;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public List<TransactionDTO> listTransactions() {
@@ -29,11 +35,17 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public TransactionDTO createTransaction(TransactionRequest transactionRequest) {
+        User user = authenticatedUserProvider.getAuthenticatedUser();
+        Category category = categoryRepository.findById(transactionRequest.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
         Transaction transaction = Transaction.builder()
                 .title(transactionRequest.getTitle())
                 .amount(transactionRequest.getAmount())
                 .type(transactionRequest.getType())
                 .description(transactionRequest.getDescription())
+                .category(category)
+                .user(user)
                 .build();
 
         Transaction transactionSaved = transactionRepository.save(transaction);
@@ -58,6 +70,10 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public TransactionDTO updateTransaction(UUID id, TransactionRequest request) {
+        User user = authenticatedUserProvider.getAuthenticatedUser();
+        Category category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+
         if(id == null) {
             throw new IllegalArgumentException("ID must be provided");
         }
@@ -74,6 +90,7 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setAmount(request.getAmount());
         transaction.setType(request.getType());
         transaction.setDescription(request.getDescription());
+        transaction.setCategory(category);
 
         transactionRepository.save(transaction);
         return transactionMapper.toDTO(transaction);

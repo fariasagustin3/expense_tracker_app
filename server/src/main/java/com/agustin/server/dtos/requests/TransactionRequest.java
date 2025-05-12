@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -15,4 +16,5 @@ public class TransactionRequest {
     private BigDecimal amount;
     private Type type;
     private String description;
+    private UUID categoryId;
 }
