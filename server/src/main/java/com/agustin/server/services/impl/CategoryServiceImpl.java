@@ -41,8 +41,8 @@ public class CategoryServiceImpl implements CategoryService {
                 .build();
 
         Category category = categoryRepository.save(categoryCreated);
-
         return categoryMapper.toDTO(category);
+
     }
 
     @Override
