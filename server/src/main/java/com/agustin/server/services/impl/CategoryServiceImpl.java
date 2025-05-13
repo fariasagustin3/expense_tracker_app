@@ -41,7 +41,7 @@ public class CategoryServiceImpl implements CategoryService {
         categories.addAll(userCategories);
         categories.addAll(defaultCategories);
 
-        // return all categories: default ones and custom ones.
+        // return all categories: default ones and custom ones
         return categories.stream().map(categoryMapper::toDTO).collect(Collectors.toList());
     }
 
