@@ -11,6 +11,7 @@ import com.agustin.server.util.AuthenticatedUserProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,7 +27,22 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDTO> listCategories() {
-        return categoryRepository.findAll().stream().map(categoryMapper::toDTO).collect(Collectors.toList());
+        // get user from JWT token
+        User user = authenticatedUserProvider.getAuthenticatedUser();
+
+        // get all user custom categories
+        List<Category> userCategories = categoryRepository.findByUserId(user.getId());
+
+        // get default categories (user.getId() == null)
+        List<Category> defaultCategories = categoryRepository.findByIsDefaultTrue();
+
+        // merge all categories in a single list
+        List<Category> categories = new ArrayList<>();
+        categories.addAll(userCategories);
+        categories.addAll(defaultCategories);
+
+        // return all categories: default ones and custom ones.
+        return categories.stream().map(categoryMapper::toDTO).collect(Collectors.toList());
     }
 
     @Override
