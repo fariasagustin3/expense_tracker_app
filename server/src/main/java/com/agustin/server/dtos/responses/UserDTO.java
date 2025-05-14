@@ -2,7 +2,7 @@ package com.agustin.server.dtos.responses;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -16,6 +16,6 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
 }

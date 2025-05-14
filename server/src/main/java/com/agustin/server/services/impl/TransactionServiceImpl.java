@@ -13,10 +13,10 @@ import com.agustin.server.util.AuthenticatedUserProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,8 +29,31 @@ public class TransactionServiceImpl implements TransactionService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public List<TransactionDTO> listTransactions() {
-        return transactionRepository.findAll().stream().map(transactionMapper::toDTO).collect(Collectors.toList());
+    public List<TransactionDTO> listTransactions(UUID categoryId, LocalDate startDate, LocalDate endDate) {
+
+        User user = authenticatedUserProvider.getAuthenticatedUser();
+
+        List<Transaction> transactions;
+
+        // validations to get transactions according to de data from the browser
+        if(categoryId != null && startDate != null && endDate != null) {
+            transactions = transactionRepository
+                    .findByUserIdAndCategoryIdAndCreatedAtBetween(
+                            user.getId(),
+                            categoryId,
+                            startDate,
+                            endDate
+                    );
+        } else if(categoryId != null) {
+            transactions = transactionRepository.findByUserIdAndCategoryId(user.getId(), categoryId);
+        } else if(startDate != null && endDate != null) {
+            transactions = transactionRepository.findByUserIdAndCreatedAtBetween(user.getId(), startDate, endDate);
+        } else {
+            transactions = transactionRepository.findByUserId(user.getId());
+        }
+
+        return transactions.stream().map(transactionMapper::toDTO).collect(Collectors.toList());
+
     }
 
     @Override
