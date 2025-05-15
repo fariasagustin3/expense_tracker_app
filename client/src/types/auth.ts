@@ -1,9 +1,11 @@
 export interface LoginCredentials {
-    email: string,
+    email: string
     password: string
 }
 
-export interface RegisterCredentials extends LoginCredentials {
-    firstName: string,
+export interface RegisterCredentials {
+    firstName: string
     lastName: string
+    email: string
+    password: string
 }
