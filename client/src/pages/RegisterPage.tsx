@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { RegisterCredentials } from "../types/auth"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import api from "../api/auth"
+import { useAuthStore } from "../store/authStore"
 
 const RegisterPage: React.FC = () => {
   const [credentials, setCredentials] = useState<RegisterCredentials>({ 
@@ -10,6 +12,8 @@ const RegisterPage: React.FC = () => {
     password: ""
   })
 
+  const navigate = useNavigate()
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCredentials({
       ...credentials,
@@ -17,9 +21,16 @@ const RegisterPage: React.FC = () => {
     })
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // TODO: implement register with backend
+    try {
+      const res = await api.post('/auth/register', credentials)
+      useAuthStore.getState().setToken(res.data.token)
+      navigate('/')
+    } catch (error) {
+      console.log('error', error)
+      alert("Something went wrong")
+    }
   }
 
   return (

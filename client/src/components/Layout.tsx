@@ -1,8 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { LayoutProps } from "../types/dashboard";
+import { useAuthStore } from "../store/authStore";
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    useAuthStore.getState().setToken(null);
+    navigate("/login");
+  };
 
   return (
     <div className="flex h-screen">
@@ -30,7 +36,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </button>
           <button
             className="text-left px-4 py-2 mt-20 rounded text-red-400 hover:text-red-500 transition"
-            onClick={() => navigate("/login")}
+            onClick={handleLogout}
           >
             Logout
           </button>

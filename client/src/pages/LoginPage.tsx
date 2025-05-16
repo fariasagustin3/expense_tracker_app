@@ -1,12 +1,16 @@
 import { useState } from "react"
 import { LoginCredentials } from "../types/auth"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import api from '../api/auth'
+import { useAuthStore } from "../store/authStore"
 
 const LoginPage: React.FC = () => {
   const [credentials, setCredentials] = useState<LoginCredentials>({ 
     email: "", 
     password: "" 
   })
+
+  const navigate = useNavigate()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCredentials({
@@ -15,9 +19,16 @@ const LoginPage: React.FC = () => {
     })
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // TODO: implement login with backend
+    try {
+      const res = await api.post('/auth/login', credentials)
+      localStorage.setItem('token', res.data.token)
+      useAuthStore.getState().setToken(res.data.token)
+      navigate('/')
+    } catch {
+      alert('Invalid credentials');
+    }
   }
 
   return (

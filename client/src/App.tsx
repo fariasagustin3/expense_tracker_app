@@ -6,16 +6,19 @@ import DashboardPage from './pages/DashboardPage'
 import TransactionsPage from './pages/TransactionsPage'
 import ProfilePage from './pages/ProfilePage'
 import CategoriesPage from './pages/CategoriesPage'
+import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/" element={<DashboardPage />} />
-      <Route path="/transactions" element={<TransactionsPage />} />
-      <Route path="/profile" element={<ProfilePage />} />
-      <Route path="/categories" element={<CategoriesPage />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/" element={<DashboardPage />} />
+        <Route path="/transactions" element={<TransactionsPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/categories" element={<CategoriesPage />} />
+      </Route>
     </Routes>
   )
 }
