@@ -1,6 +1,11 @@
-function TransactionsPage() {
+import React from "react"
+import Layout from "../components/Layout"
+
+const TransactionsPage: React.FC = () => {
   return (
-    <div>TransactionsPage</div>
+    <Layout>
+      <div>TransactionsPage</div>
+    </Layout>
   )
 }
 

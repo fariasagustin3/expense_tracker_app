@@ -19,8 +19,7 @@ const RegisterPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log(credentials)
-    // TODO: implement login with backend
+    // TODO: implement register with backend
   }
 
   return (

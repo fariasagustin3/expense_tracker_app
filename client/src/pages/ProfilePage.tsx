@@ -1,6 +1,10 @@
-function ProfilePage() {
+import Layout from "../components/Layout";
+
+const ProfilePage: React.FC = () => {
   return (
-    <div>ProfilePage</div>
+    <Layout>
+      <div>ProfilePage</div>
+    </Layout>
   )
 }
 

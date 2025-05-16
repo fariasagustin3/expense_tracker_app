@@ -1,6 +1,11 @@
-function DashboardPage() {
+import React from 'react'
+import Layout from '../components/Layout'
+
+const DashboardPage: React.FC = () => {
   return (
-    <div>DashboardPage</div>
+    <Layout>
+      <div>DashboardPage</div>
+    </Layout>
   )
 }
 
