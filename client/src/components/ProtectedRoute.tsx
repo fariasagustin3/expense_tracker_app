@@ -8,7 +8,6 @@ interface JwtPayload {
 
 const ProtectedRoute: React.FC = () => {
     const token = useAuthStore(state => state.token)
-    console.log('token', token)
 
     if (!token) return <Navigate to="/login" />
 
