@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { LayoutProps } from "../types/dashboard";
 import { useAuthStore } from "../store/authStore";
+import { useTransactionsStore } from "../store/transactionStore";	
 import { useEffect, useState } from "react";
 import api from "../api/auth";
+import { TransactionState } from "../store/transactionStore";
 
 interface Transaction {
   title: string;
@@ -19,6 +21,7 @@ interface Category {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const { createTransaction } = useTransactionsStore((state: TransactionState) => state)
   const [categories, setCategories] = useState<Category[]>([])
   const [openModal, setOpenModal] = useState<boolean>(false)
   const [transaction, setTransaction] = useState<Transaction>({
@@ -43,11 +46,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     })
   }
 
-  const handleCreateTransaction = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateTransaction = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      api.post('/transactions', transaction)
+      const res = await api.post('/transactions', transaction)
       alert('Transaction created successfully')
+      createTransaction(res.data)
       setOpenModal(false)
       setTransaction({
         title: "",
