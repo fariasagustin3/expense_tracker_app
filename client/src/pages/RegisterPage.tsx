@@ -34,8 +34,9 @@ const RegisterPage: React.FC = () => {
   }
 
   return (
-    <div className="flex w-screen h-screen items-center justify-center bg-gray-100">
-      <div className="w-1/4 h-4/5 bg-white rounded-md shadow-md py-4 px-10">
+    <div className="relative bg-[url('/register-bg.jpg')] bg-cover bg-no-repeat flex w-screen h-screen items-center justify-center">
+      <div className="absolute inset-0 bg-black/70" aria-hidden="true" />
+      <div className="relative z-10 w-1/4 h-4/5 bg-white rounded-md shadow-md py-4 px-10">
         <h1 className="text-2xl text-gray-800 font-semibold mb-4 text-center">Register</h1>
         <p className="text-xs text-gray-600 text-center">Take control of your personal finances is the first step to get a healthy life</p>
         <div className="h-[1px] bg-gray-200 my-5"></div>

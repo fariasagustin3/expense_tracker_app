@@ -30,8 +30,9 @@ const LoginPage: React.FC = () => {
   }
 
   return (
-    <div className="flex w-screen h-screen items-center justify-center bg-gray-100">
-      <div className="w-1/4 h-2/3 bg-white rounded-md shadow-md py-4 px-10">
+    <div className="relative flex w-screen h-screen items-center justify-center bg-[url('/login-bg.jpg')] bg-cover bg-no-repeat">
+      <div className="absolute inset-0 bg-black/70" aria-hidden="true" />
+      <div className="relative z-10 w-1/4 h-2/3 bg-white rounded-md shadow-xl py-4 px-10">
         <h1 className="text-2xl text-gray-800 font-semibold mb-4 text-center">Login</h1>
         <p className="text-xs text-gray-600 text-center">Make the difference on your finances</p>
         <div className="h-[1px] bg-gray-200 my-5"></div>
