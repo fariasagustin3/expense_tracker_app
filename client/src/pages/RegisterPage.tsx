@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import TextInput from '../components/forms/TextInput'
 import SubmitButton from '../components/forms/SubmitButton'
-import { Link } from 'wouter'
+import { useAuth } from '../hooks/useAuth'
+import { Link } from 'react-router-dom'
 
 interface Credentials {
   firstName: string
@@ -11,6 +12,7 @@ interface Credentials {
 }
 
 const RegisterPage: React.FC = () => {
+  const { register, loading, error } = useAuth()
   const [credentials, setCredentials] = useState<Credentials>({
     firstName: "",
     lastName: "",
@@ -18,9 +20,10 @@ const RegisterPage: React.FC = () => {
     password: ""
   })
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log('credentials', credentials)
+    await register(credentials)
+    if(!error) setCredentials({ firstName: "", lastName: "", email: "", password: "" })
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,7 +72,8 @@ const RegisterPage: React.FC = () => {
             name="password"
             value={credentials.password}
           />
-          <SubmitButton text="Register" />
+          <SubmitButton text={loading ? "Loading..." : "Register"} />
+          {error && <p className="text-red-500 text-center text-xs">{error}</p>}
         </form>
         <div className="h-[1px] bg-gray-200 my-5"></div>
         <p
@@ -77,7 +81,7 @@ const RegisterPage: React.FC = () => {
         >
           Already have an account?
           <Link
-            href="/login"
+            to="/login"
             className="text-blue-500 font-semibold"
           >
             {" "}Login

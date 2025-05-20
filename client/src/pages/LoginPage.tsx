@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import TextInput from "../components/forms/TextInput";
 import SubmitButton from "../components/forms/SubmitButton";
-import { Link } from "wouter";
+import { useAuth } from "../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 interface Credentials {
   email: string
@@ -9,14 +10,16 @@ interface Credentials {
 }
 
 const LoginPage: React.FC = () => {
+  const { login, loading, error } = useAuth()
   const [credentials, setCredentials] = useState<Credentials>({
     email: "",
     password: ""
   });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log('credentials', credentials)
+    await login(credentials)
+    if(!error) setCredentials({ email: "", password: "" })
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,15 +52,16 @@ const LoginPage: React.FC = () => {
             name="password"
             value={credentials.password}
           />
-          <SubmitButton text="Login" />
+          <SubmitButton text={loading ? "Loading..." : "Login"} />
+          {error && <p className="text-red-500 text-center text-xs">{error}</p>}
         </form>
         <div className="h-[1px] bg-gray-200 my-5"></div>
         <p
           className="text-xs text-gray-600 text-center"
         >
           Don't have an account?
-          <Link 
-            href="/register"
+          <Link
+            to="/register"
             className="text-blue-500 font-semibold"
           >
             {" "}Sign up

@@ -1,23 +1,24 @@
-import { Route, Switch } from "wouter"
 import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
 import ProtectedRoutes from "./components/ProtectedRoutes"
-import PrivateRoutes from "./routes/PrivateRoutes"
+import DashboardPage from "./pages/DashboardPage"
+import TransactionsPage from "./pages/TransactionsPage"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 
 function App() {
   return (
-    <>
-      <Switch>
-        <Route path='/login' component={LoginPage} />
-        <Route path='/register' component={RegisterPage} />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
-        <Route>
-          <ProtectedRoutes isAuthenticated={false}>
-            <PrivateRoutes />
-          </ProtectedRoutes>
+        {/* Rutas privadas */}
+        <Route element={<ProtectedRoutes />}>
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/transactions" element={<TransactionsPage />} />
         </Route>
-      </Switch>
-    </>
+      </Routes>
+    </BrowserRouter>
   )
 }
 

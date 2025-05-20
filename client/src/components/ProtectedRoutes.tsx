@@ -1,26 +1,23 @@
 import React, { useEffect } from 'react'
-import { useLocation } from 'wouter'
+import { useAuthStore } from '../stores/useAuthStore'
+import { Navigate, Outlet } from 'react-router-dom'
 
-interface ProtectedRoutesProps {
-    isAuthenticated: boolean
-    redirectTo?: string
-    children: React.ReactNode
-}
-
-const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({ isAuthenticated, redirectTo = '/login', children }) => {
-    const [, navigate] = useLocation()
+const ProtectedRoutes: React.FC = () => {
+    const { isAuthenticated, checkAuth, checkingAuth } = useAuthStore(state => state)
 
     useEffect(() => {
-        if (!isAuthenticated) {
-            navigate(redirectTo)
-        }
-    }, [isAuthenticated, navigate, redirectTo])
+    checkAuth()
+  }, [checkAuth])
 
-    if (!isAuthenticated) {
-        return null
-    }
+  if (checkingAuth) {
+    return <div className="p-4">Verifying authentication...</div>
+  }
 
-    return <>{children}</>
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />
+  }
+
+    return <Outlet />
 }
 
 export default ProtectedRoutes

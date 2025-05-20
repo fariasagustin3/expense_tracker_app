@@ -1,24 +1,43 @@
 import { create } from 'zustand'
+import { jwtDecode } from 'jwt-decode'
 
 interface AuthState {
   token: string | null
-  setToken: (token: string | null) => void
+  isAuthenticated: boolean
+  checkingAuth: boolean
+  login: (token: string) => void
   logout: () => void
+  checkAuth: () => void
+}
+
+const isTokenValid = (token: string | null): boolean => {
+  if (!token) return false
+  try {
+    const { exp } = jwtDecode<{ exp: number }>(token)
+    return Date.now() < exp * 1000
+  } catch {
+    return false
+  }
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  token: localStorage.getItem('token') || null,
-  setToken: (token) => {
-    if (token) {
-      localStorage.setItem('token', token)
-    } else {
-      localStorage.removeItem('token')
-    }
+  token: null,
+  isAuthenticated: false,
+  checkingAuth: true,
 
-    set({ token })
+  login: (token) => {
+    localStorage.setItem('token', token)
+    set({ token, isAuthenticated: isTokenValid(token), checkingAuth: false })
   },
+
   logout: () => {
     localStorage.removeItem('token')
-    set({ token: null })
-  }
+    set({ token: null, isAuthenticated: false, checkingAuth: false })
+  },
+
+  checkAuth: () => {
+    const token = localStorage.getItem('token')
+    const isValid = isTokenValid(token)
+    set({ token: isValid ? token : null, isAuthenticated: isValid, checkingAuth: false })
+  },
 }))
