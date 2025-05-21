@@ -4,6 +4,8 @@ import ProtectedRoutes from "./components/ProtectedRoutes"
 import DashboardPage from "./pages/DashboardPage"
 import TransactionsPage from "./pages/TransactionsPage"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
+import CategoriesPage from "./pages/CategoriesPage"
+import ProfilePage from "./pages/ProfilePage"
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
         <Route element={<ProtectedRoutes />}>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/transactions" element={<TransactionsPage />} />
+          <Route path="/categories" element={<CategoriesPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
       </Routes>
     </BrowserRouter>
