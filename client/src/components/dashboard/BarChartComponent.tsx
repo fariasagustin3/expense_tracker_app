@@ -9,29 +9,10 @@ import {
   Cell,
   CartesianGrid,
 } from 'recharts'
-
-interface Category {
-  id: string;
-  name: string;
-  color: string;
-  isDefault: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface Transaction {
-  id: string;
-  title: string;
-  amount: number;
-  description: string;
-  category: Category;
-  type: string; // 'income' | 'expense'
-  createdAt: Date;
-  updatedAt: Date;
-}
+import type { Transaction } from '../../types/dashboard'
 
 interface BarChartProps {
-  transactions: Transaction[];
+  transactions: Transaction[]
 }
 
 const BarChartComponent: React.FC<BarChartProps> = ({ transactions }) => {
