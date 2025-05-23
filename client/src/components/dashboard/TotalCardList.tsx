@@ -12,7 +12,7 @@ const TotalCardList: React.FC = () => {
   useEffect(() => {
     const getReport = async () => {
       try {
-        const response = await get<Report>(`/reports/monthly?month=${formatDate(new Date())}`)
+        const response = await get<Report>(`/reports/monthly?month=${formatDate(new Date()).currentMonth}`)
         if(response.data) {
           getMonthlyReport(response.data)
         }

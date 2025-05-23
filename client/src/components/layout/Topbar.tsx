@@ -8,7 +8,7 @@ interface TopbarProps {
 
 const Topbar: React.FC<TopbarProps> = ({ children }) => {
   return (
-    <div className='flex-1 flex flex-col'>
+    <div className='flex-1 flex flex-col mb-4'>
       <header className='bg-white flex items-center justify-between px-6 py-4'>
         <h3 className='font-semibold text-sm'>Welcome back, Agustin</h3>
         <Link to='/profile' className='ml-auto cursor-pointer'>

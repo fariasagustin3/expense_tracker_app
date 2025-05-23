@@ -5,16 +5,19 @@ import BarChartComponent from '../components/dashboard/BarChartComponent'
 import { useTransactionStore } from '../stores/useTransactionStore'
 import { useApiClient } from '../hooks/useApiClient'
 import type { Transaction } from '../types/dashboard'
+import { formatDate } from '../utils/formatDate'
+import TransactionsTable from '../components/transactions/TransactionsTable'
 
 const DashboardPage: React.FC = () => {
   const { transactions, getAllTransactions } = useTransactionStore((state) => state)
   const { get } = useApiClient()
+  const { firstDayOfMonth, currentDay } = formatDate(new Date())
 
   useEffect(() => {
     const getTransactions = async () => {
       try {
-        const response = await get<Transaction[]>('/transactions')
-        if(response.data) {
+        const response = await get<Transaction[]>(`/transactions?startDate=${firstDayOfMonth}&endDate=${currentDay}`)
+        if (response.data) {
           getAllTransactions(response.data)
         }
       } catch (error) {
@@ -27,7 +30,7 @@ const DashboardPage: React.FC = () => {
 
   return (
     <Layout>
-      <div className='flex flex-col p-4 w-4/5'>
+      <div className='flex flex-col p-4 w-4/5 mb-10'>
 
         {/* card list */}
         <TotalCardList />
@@ -36,6 +39,7 @@ const DashboardPage: React.FC = () => {
         <BarChartComponent transactions={transactions} />
 
         {/* transaction list */}
+        <TransactionsTable transactions={transactions} />
       </div>
     </Layout>
   )
