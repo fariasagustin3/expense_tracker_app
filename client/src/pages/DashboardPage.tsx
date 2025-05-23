@@ -10,6 +10,7 @@ import TransactionsTable from '../components/transactions/TransactionsTable'
 
 const DashboardPage: React.FC = () => {
   const { transactions, getAllTransactions } = useTransactionStore((state) => state)
+
   const { get } = useApiClient()
   const { firstDayOfMonth, currentDay } = formatDate(new Date())
 
@@ -26,7 +27,8 @@ const DashboardPage: React.FC = () => {
     }
 
     getTransactions()
-  }, [])
+    
+  }, [transactions.length, firstDayOfMonth, currentDay])
 
   return (
     <Layout>

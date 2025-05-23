@@ -6,6 +6,7 @@ interface AuthState {
   isAuthenticated: boolean
   checkingAuth: boolean
   login: (token: string) => void
+  register: (token: string) => void
   logout: () => void
   checkAuth: () => void
 }
@@ -26,6 +27,11 @@ export const useAuthStore = create<AuthState>((set) => ({
   checkingAuth: true,
 
   login: (token) => {
+    localStorage.setItem('token', token)
+    set({ token, isAuthenticated: isTokenValid(token), checkingAuth: false })
+  },
+
+  register: (token: string) => {
     localStorage.setItem('token', token)
     set({ token, isAuthenticated: isTokenValid(token), checkingAuth: false })
   },

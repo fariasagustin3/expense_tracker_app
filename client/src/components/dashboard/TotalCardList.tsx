@@ -4,9 +4,11 @@ import { useReportStore } from '../../stores/useReportStore'
 import { useApiClient } from '../../hooks/useApiClient'
 import { formatDate } from '../../utils/formatDate'
 import type { Report } from '../../types/dashboard'
+import { useTransactionStore } from '../../stores/useTransactionStore'
 
 const TotalCardList: React.FC = () => {
   const { monthlyIncome, monthlyExpense, balance, getMonthlyReport } = useReportStore(state => state)
+  const { transactions } = useTransactionStore(state => state)
   const { get } = useApiClient()
 
   useEffect(() => {
@@ -22,7 +24,8 @@ const TotalCardList: React.FC = () => {
     }
 
     getReport()
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transactions])
 
   return (
     <div className='flex items-center gap-4 w-full'>

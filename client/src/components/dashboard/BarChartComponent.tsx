@@ -39,7 +39,7 @@ const BarChartComponent: React.FC<BarChartProps> = ({ transactions }) => {
         Total expenses by category
       </h2>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} margin={{ top: 20, right: 20, bottom: 40, left: 0 }}>
+        <BarChart data={data} margin={{ top: 20, right: 20, bottom: 40, left: 0 }} maxBarSize={20} barGap={0}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
           <XAxis dataKey="name" stroke="#475569" tick={{ fontSize: 12 }} />
           <YAxis stroke="#475569" tick={{ fontSize: 12 }} />

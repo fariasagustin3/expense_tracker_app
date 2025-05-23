@@ -9,6 +9,7 @@ interface TransactionTableProps {
 const TransactionsTable: React.FC<TransactionTableProps> = ({ transactions }) => {
   return (
     <div className='bg-white p-10 rounded-2xl shadow-md'>
+      <h1 className='mb-4 text-2xl font-semibold'>Latest Transactions</h1>
       <table className='w-full'>
         <thead>
           <tr className='bg-gray-200'>
@@ -20,7 +21,9 @@ const TransactionsTable: React.FC<TransactionTableProps> = ({ transactions }) =>
           </tr>
         </thead>
         <tbody>
-          {transactions.slice(0, 3).map((transaction: Transaction, index: number) => (
+          {transactions.slice(0, 5).map((transaction: Transaction, index: number) => {
+            console.log('transaction date: ', new Date(transaction.createdAt).getTime())
+            return (
             <tr key={transaction.id} className={index % 2 !== 0 ? 'bg-gray-100' : ''}>
               <td className='p-2 text-xs'>{transaction.title}</td>
               <td className='p-2 text-xs'>{formatAmount(transaction.amount, 'ARS')}</td>
@@ -33,7 +36,7 @@ const TransactionsTable: React.FC<TransactionTableProps> = ({ transactions }) =>
               <td className={`p-2 text-xs ${transaction.type === 'EXPENSE' ? 'text-red-500' : 'text-green-500'}`}>{transaction.type}</td>
               <td className='p-2 text-xs'>{transaction.createdAt.toLocaleString()}</td>
             </tr>
-          ))}
+          )})}
         </tbody>
       </table>
     </div>

@@ -35,7 +35,14 @@ export const useAuth = () => {
   }
 
   const register = async (credentials: RegisterCredentials) => {
-    return await post<AuthResponse>("/auth/register", credentials)
+    const { data, error } = await post<AuthResponse>("/auth/register", credentials)
+
+    if(data?.token) {
+      state.register(data.token)
+      navigate('/')
+    }
+
+    return { data, error }
   }
 
 
