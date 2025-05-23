@@ -17,3 +17,10 @@ export interface Transaction {
   createdAt: Date
   updatedAt: Date
 }
+
+export interface Report {
+  month: string
+  totalIncome: number
+  totalExpense: number
+  balance: number
+}
