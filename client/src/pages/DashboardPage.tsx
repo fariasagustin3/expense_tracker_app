@@ -9,39 +9,35 @@ import { formatDate } from '../utils/formatDate'
 import TransactionsTable from '../components/transactions/TransactionsTable'
 
 const DashboardPage: React.FC = () => {
-  const { transactions, getAllTransactions } = useTransactionStore((state) => state)
-
+  const { transactions, getMonthlyTransactions } = useTransactionStore((state) => state)
   const { get } = useApiClient()
-  const { firstDayOfMonth, currentDay } = formatDate(new Date())
+  const { firstDayOfMonth, currentDayAndTime } = formatDate(new Date())
 
   useEffect(() => {
     const getTransactions = async () => {
       try {
-        const response = await get<Transaction[]>(`/transactions?startDate=${firstDayOfMonth}&endDate=${currentDay}`)
-        if (response.data) {
-          getAllTransactions(response.data)
+        const monthlyTransactionsResponse = await get<Transaction[]>(
+          `/transactions?startDate=${firstDayOfMonth}&endDate=${currentDayAndTime}`
+        )
+
+        if (monthlyTransactionsResponse.data) {
+          getMonthlyTransactions(monthlyTransactionsResponse.data)
         }
       } catch (error) {
-        console.log(error)
+        console.error('Error al obtener transacciones mensuales:', error)
       }
     }
 
     getTransactions()
-    
-  }, [transactions.length, firstDayOfMonth, currentDay])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Layout>
       <div className='flex flex-col p-4 w-4/5 mb-10'>
-
-        {/* card list */}
         <TotalCardList />
-
-        {/* chart */}
         <BarChartComponent transactions={transactions} />
-
-        {/* transaction list */}
-        <TransactionsTable transactions={transactions} />
+        <TransactionsTable />
       </div>
     </Layout>
   )
