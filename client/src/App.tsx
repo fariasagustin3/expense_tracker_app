@@ -3,7 +3,6 @@ import RegisterPage from "./pages/RegisterPage"
 import ProtectedRoutes from "./components/ProtectedRoutes"
 import DashboardPage from "./pages/DashboardPage"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import CategoriesPage from "./pages/CategoriesPage"
 import ProfilePage from "./pages/ProfilePage"
 
 function App() {
@@ -16,7 +15,6 @@ function App() {
         {/* Rutas privadas */}
         <Route element={<ProtectedRoutes />}>
           <Route path="/" element={<DashboardPage />} />
-          <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
       </Routes>

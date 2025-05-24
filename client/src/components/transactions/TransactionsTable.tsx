@@ -3,32 +3,32 @@ import type { Transaction } from '../../types/dashboard'
 import { formatAmount } from '../../utils/formatAmount'
 import { formatDate } from '../../utils/formatDate'
 import { useApiClient } from '../../hooks/useApiClient'
+import { useTransactionStore } from '../../stores/useTransactionStore'
 
 const TransactionsTable: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date())
-  const [transactions, setTransactions] = useState<Transaction[]>([])
+  const { dailyTransactions, getDailyTransactions } = useTransactionStore((state) => state)
   const { get } = useApiClient()
   const { subDays, addDays } = formatDate(currentDate)
-
-  const fetchDailyTransactions = async (date: Date) => {
-    const { currentStartOfDay, currentEndOfDay } = formatDate(date)
-
-    try {
-      const response = await get<Transaction[]>(
-        `/transactions?startDate=${currentStartOfDay}&endDate=${currentEndOfDay}`
-      )
-      if (response.data) setTransactions(response.data)
-    } catch (error) {
-      console.error('Error al obtener transacciones:', error)
-    }
-  }
 
   const goToPreviousDay = () => setCurrentDate(prev => subDays(prev, 1))
   const goToNextDay = () => setCurrentDate(prev => addDays(prev, 1))
 
   useEffect(() => {
+    const fetchDailyTransactions = async (date: Date) => {
+      const { currentStartOfDay, currentEndOfDay } = formatDate(date)
+
+      try {
+        const response = await get<Transaction[]>(
+          `/transactions?startDate=${currentStartOfDay}&endDate=${currentEndOfDay}`
+        )
+        if (response.data) getDailyTransactions(response.data)
+      } catch (error) {
+        console.error('Error al obtener transacciones:', error)
+      }
+    }
+
     fetchDailyTransactions(currentDate)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentDate])
 
   return (
@@ -46,22 +46,22 @@ const TransactionsTable: React.FC = () => {
       <table className='w-full'>
         <thead>
           <tr className='bg-gray-200'>
-            <th className='p-2 text-left text-sm font-medium'>Título</th>
-            <th className='p-2 text-left text-sm font-medium'>Monto</th>
-            <th className='p-2 text-left text-sm font-medium'>Categoría</th>
-            <th className='p-2 text-left text-sm font-medium'>Tipo</th>
-            <th className='p-2 text-left text-sm font-medium'>Fecha</th>
+            <th className='p-2 text-left text-sm font-medium'>Title</th>
+            <th className='p-2 text-left text-sm font-medium'>Amount</th>
+            <th className='p-2 text-left text-sm font-medium'>Category</th>
+            <th className='p-2 text-left text-sm font-medium'>Type</th>
+            <th className='p-2 text-left text-sm font-medium'>Date</th>
           </tr>
         </thead>
         <tbody>
-          {transactions.length === 0 ? (
+          {dailyTransactions.length === 0 ? (
             <tr>
               <td colSpan={5} className="text-center py-4 text-gray-500">
                 There is no transactions for this day
               </td>
             </tr>
           ) : (
-            transactions
+            dailyTransactions
               .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
               .map((transaction, index) => (
                 <tr key={transaction.id} className={index % 2 !== 0 ? 'bg-gray-100' : ''}>
