@@ -1,7 +1,6 @@
 import React from 'react'
 import SidebarItem from './SidebarItem'
 import { MdDashboard } from 'react-icons/md'
-import { GrTransaction } from 'react-icons/gr'
 import { BiCategoryAlt } from 'react-icons/bi'
 import { FaSignOutAlt } from 'react-icons/fa'
 
@@ -12,7 +11,6 @@ const Leftbar: React.FC = () => {
         Expense Tracker
       </div>
       <SidebarItem icon={<MdDashboard size={20} />} label='Dashboard' route='/' />
-      <SidebarItem icon={<GrTransaction size={20} />} label='Transactions' route='/transactions' />
       <SidebarItem icon={<BiCategoryAlt size={20} />} label='Categories' route='/categories' />
 
       <span className='mt-auto text-red-500'>
