@@ -7,9 +7,10 @@ interface TextInputProps {
   type: string
   name: string
   value: string | number | readonly string[] | undefined
+  required: boolean
 }
 
-const TextInput: React.FC<TextInputProps> = ({ label, placeholder, onChange, type, name, value }) => {
+const TextInput: React.FC<TextInputProps> = ({ label, placeholder, onChange, type, name, value, required }) => {
   return (
     <div className='flex flex-col gap-2'>
       <label className='font-semibold text-xs'>{label}</label>
@@ -20,6 +21,7 @@ const TextInput: React.FC<TextInputProps> = ({ label, placeholder, onChange, typ
         type={type}
         name={name}
         value={value}
+        required={required}
       />
     </div>
   )

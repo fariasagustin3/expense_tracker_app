@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Topbar from './layout/Topbar'
 import Leftbar from './layout/Leftbar'
 import Rightbar from './layout/Rightbar'
-import FormDialog from './ui/FormDialog'
+import FormDialog from './forms/FormDialog'
 import TextInput from './forms/TextInput'
 import SelectInput from './forms/SelectInput'
 import SubmitButton from './forms/SubmitButton'
@@ -18,6 +18,13 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { categories, getAllCategories } = useCategoryStore((state) => state)
+  const [error, setError] = useState({
+    title: false,
+    amount: false,
+    type: false,
+    description: false,
+    categoryId: false
+  })
   const { setTransaction } = useTransactionStore((state) => state)
   const { isOpen, onClose } = useGeneralStore((state) => state)
   const { get, post } = useApiClient()
@@ -50,6 +57,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       ...transactionInput,
       [event.target.name]: event.target.value
     })
+
+    if (event.target.value === '') {
+      setError({
+        ...error,
+        [event.target.name]: true
+      })
+    } else {
+      setError({
+        ...error,
+        [event.target.name]: false
+      })
+    }
   }
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -68,7 +87,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         setTransactionInput({ title: '', amount: 0, type: 'EXPENSE', description: '', categoryId: '' })
         onClose()
       }
-    } catch(error) {
+    } catch (error) {
       console.log(error)
     }
   }
@@ -92,7 +111,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           type='text'
           name='title'
           value={transactionInput.title}
+          required
         />
+        {error.title && <p className='text-red-500 text-xs -mt-3'>Title is required</p>}
         <TextInput
           label='Amount'
           placeholder='Enter the transaction amount'
@@ -100,14 +121,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           type='number'
           name='amount'
           value={transactionInput.amount}
+          required
         />
+        {error.amount && <p className='text-red-500 text-xs -mt-3'>Amount is required</p>}
         <SelectInput
           label='Type'
           onChange={handleSelectChange}
           name='type'
           value={transactionInput.type}
           options={[{ id: 'EXPENSE', name: 'EXPENSE' }, { id: 'INCOME', name: 'INCOME' }]}
+          required
         />
+        {error.type && <p className='text-red-500 text-xs -mt-3'>Type is required</p>}
         <TextInput
           label='Description'
           placeholder='Enter the transaction description'
@@ -115,15 +140,22 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           type='text'
           name='description'
           value={transactionInput.description}
+          required
         />
+        {error.description && <p className='text-red-500 text-xs -mt-3'>Description is required</p>}
         <SelectInput
           label='Category'
           onChange={handleSelectChange}
           name='categoryId'
           value={transactionInput.categoryId}
           options={categories}
+          required
         />
-        <SubmitButton text='Create transaction' />
+        {error.categoryId && <p className='text-red-500 text-xs -mt-3'>Category is required</p>}
+        <SubmitButton
+          text='Create transaction'
+          isDisabled={error.title || error.amount || error.type || error.description || error.categoryId}
+        />
       </FormDialog>
     </div>
   )

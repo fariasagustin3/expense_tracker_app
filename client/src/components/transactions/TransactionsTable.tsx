@@ -29,6 +29,7 @@ const TransactionsTable: React.FC = () => {
     }
 
     fetchDailyTransactions(currentDate)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentDate])
 
   return (
