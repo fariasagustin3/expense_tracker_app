@@ -2,15 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Topbar from './layout/Topbar'
 import Leftbar from './layout/Leftbar'
 import Rightbar from './layout/Rightbar'
-import FormDialog from './forms/FormDialog'
-import TextInput from './forms/TextInput'
-import SelectInput from './forms/SelectInput'
-import SubmitButton from './forms/SubmitButton'
 import { useCategoryStore } from '../stores/useCategoryStore'
 import { useGeneralStore } from '../stores/useGeneralStore'
 import { useApiClient } from '../hooks/useApiClient'
 import type { Category, Transaction } from '../types/dashboard'
 import { useTransactionStore } from '../stores/useTransactionStore'
+import CreateTransactionForm from './transactions/CreateTransactionForm'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -103,60 +100,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </Topbar>
 
       {/* form create transaction dialog */}
-      <FormDialog isOpen={isOpen} onClose={onClose} title='Create Transaction' onSubmit={handleSubmit}>
-        <TextInput
-          label='Title'
-          placeholder='Enter a title'
-          onChange={handleChange}
-          type='text'
-          name='title'
-          value={transactionInput.title}
-          required
-        />
-        {error.title && <p className='text-red-500 text-xs -mt-3'>Title is required</p>}
-        <TextInput
-          label='Amount'
-          placeholder='Enter the transaction amount'
-          onChange={handleChange}
-          type='number'
-          name='amount'
-          value={transactionInput.amount}
-          required
-        />
-        {error.amount && <p className='text-red-500 text-xs -mt-3'>Amount is required</p>}
-        <SelectInput
-          label='Type'
-          onChange={handleSelectChange}
-          name='type'
-          value={transactionInput.type}
-          options={[{ id: 'EXPENSE', name: 'EXPENSE' }, { id: 'INCOME', name: 'INCOME' }]}
-          required
-        />
-        {error.type && <p className='text-red-500 text-xs -mt-3'>Type is required</p>}
-        <TextInput
-          label='Description'
-          placeholder='Enter the transaction description'
-          onChange={handleChange}
-          type='text'
-          name='description'
-          value={transactionInput.description}
-          required
-        />
-        {error.description && <p className='text-red-500 text-xs -mt-3'>Description is required</p>}
-        <SelectInput
-          label='Category'
-          onChange={handleSelectChange}
-          name='categoryId'
-          value={transactionInput.categoryId}
-          options={categories}
-          required
-        />
-        {error.categoryId && <p className='text-red-500 text-xs -mt-3'>Category is required</p>}
-        <SubmitButton
-          text='Create transaction'
-          isDisabled={error.title || error.amount || error.type || error.description || error.categoryId}
-        />
-      </FormDialog>
+      <CreateTransactionForm
+        isOpen={isOpen}
+        onClose={onClose}
+        title='Create Transaction'
+        onSubmit={handleSubmit}
+        handleChange={handleChange}
+        handleSelectChange={handleSelectChange}
+        transactionInput={transactionInput}
+        error={error}
+        categories={categories}
+      />
     </div>
   )
 }
