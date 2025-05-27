@@ -74,7 +74,11 @@ const TransactionsTable: React.FC = () => {
                       {transaction.category.name}
                     </div>
                   </td>
-                  <td className={`p-2 text-xs ${transaction.type === 'EXPENSE' ? 'text-red-500' : 'text-green-500'}`}>{transaction.type}</td>
+                  <td className={`p-2 text-xs`}>
+                    <div className={`border-[2px] font-semibold flex items-center justify-center p-[2px] rounded-md ${transaction.type === 'EXPENSE' ? 'text-red-500' : 'text-green-500'} capitalize`}>
+                      {transaction.type.toLowerCase()}
+                    </div>
+                  </td>
                   <td className='p-2 text-xs'>{formatDate(new Date(transaction.createdAt)).beautifyDate}</td>
                 </tr>
               ))

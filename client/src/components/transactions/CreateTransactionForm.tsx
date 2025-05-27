@@ -14,6 +14,7 @@ interface CreateTransactionFormProps {
   transactionInput: { title: string, amount: number, type: string, description: string, categoryId: string }
   handleSelectChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
   error: Record<string, boolean>
+  openCategoryModal: () => void
   categories: Category[]
 }
 
@@ -26,7 +27,8 @@ const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
   handleSelectChange,
   transactionInput,
   error,
-  categories
+  categories,
+  openCategoryModal
 }) => {
   return (
     <FormDialog isOpen={isOpen} onClose={onClose} title={title} onSubmit={onSubmit}>
@@ -78,10 +80,18 @@ const CreateTransactionForm: React.FC<CreateTransactionFormProps> = ({
         required
       />
       {error.categoryId && <p className='text-red-500 text-xs -mt-3'>Category is required</p>}
-      <SubmitButton
-        text='Create transaction'
-        isDisabled={error.title || error.amount || error.type || error.description || error.categoryId}
-      />
+      <div className='flex items-center w-full gap-2'>
+        <SubmitButton
+          text='Create transaction'
+          isDisabled={error.title || error.amount || error.type || error.description || error.categoryId}
+        />
+        <button
+          className='flex-1 bg-yellow-300 hover:bg-yellow-900 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline transition duration-300 ease-in-out'
+          onClick={openCategoryModal}
+        >
+          Add Category
+        </button>
+      </div>
     </FormDialog>
   )
 }

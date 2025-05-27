@@ -1,13 +1,19 @@
 import { create } from 'zustand'
 
 interface GeneralState {
-  isOpen: boolean
-  openModal: () => void,
-  onClose: () => void
+  isTransactionFormOpen: boolean,
+  isCategoryFormOpen: boolean,
+  openCreateTransactionModal: () => void,
+  closeCreateTransactionModal: () => void,
+  openCreateCategoryModal: () => void,
+  closeCreateCategoryModal: () => void
 }
 
 export const useGeneralStore = create<GeneralState>((set) => ({
-  isOpen: false,
-  openModal: () => set({ isOpen: true }),
-  onClose: () => set({ isOpen: false })
+  isTransactionFormOpen: false,
+  isCategoryFormOpen: false,
+  openCreateTransactionModal: () => set({ isTransactionFormOpen: true }),
+  closeCreateTransactionModal: () => set({ isTransactionFormOpen: false }),
+  openCreateCategoryModal: () => set({ isCategoryFormOpen: true }),
+  closeCreateCategoryModal: () => set({ isCategoryFormOpen: false }),
 }))

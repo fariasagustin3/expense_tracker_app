@@ -6,7 +6,7 @@ import { useGeneralStore } from '../../stores/useGeneralStore'
 
 const Rightbar: React.FC = () => {
   const { transactions } = useTransactionStore((state) => state)
-  const { openModal } = useGeneralStore((state) => state)
+  const { openCreateTransactionModal } = useGeneralStore((state) => state)
 
   useEffect(() => {}, [transactions.length])
 
@@ -15,7 +15,7 @@ const Rightbar: React.FC = () => {
       <GeneralBalanceCard totalTransactions={transactions.length} />
       <Button
         label='Add Transaction'
-        onClick={openModal}
+        onClick={openCreateTransactionModal}
       />
     </aside>
   )
