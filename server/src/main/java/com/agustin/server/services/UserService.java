@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface UserService {
 
     List<UserDTO> getAllUsers();
-    UserDTO getProfile(UUID id);
+    UserDTO getProfile(String email);
     UserDTO updateUser(UUID id, UserRequest request);
     String deleteUser(UUID id);
 }

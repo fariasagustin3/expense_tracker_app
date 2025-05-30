@@ -29,8 +29,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getProfile(UUID id) {
-        Optional<User> user = userRepository.findById(id);
+    public UserDTO getProfile(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
 
         if(user.isEmpty()) {
             throw new IllegalArgumentException("User not found");

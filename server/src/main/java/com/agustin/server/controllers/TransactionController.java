@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,8 +22,8 @@ public class TransactionController {
     @GetMapping
     public ResponseEntity<List<TransactionDTO>> listTransactions(
             @RequestParam(required = false) UUID categoryId,
-            @RequestParam(required = false) LocalDate startDate,
-            @RequestParam(required = false) LocalDate endDate
+            @RequestParam(required = false) LocalDateTime startDate,
+            @RequestParam(required = false) LocalDateTime endDate
             ) {
         List<TransactionDTO> transactions = transactionService.listTransactions(categoryId, startDate, endDate);
 

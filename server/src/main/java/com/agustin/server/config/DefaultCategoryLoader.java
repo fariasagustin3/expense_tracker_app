@@ -16,15 +16,20 @@ public class DefaultCategoryLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if(categoryRepository.countByIsDefaultTrue() == 0) {
+        if (categoryRepository.countByIsDefaultTrue() == 0) {
             List<Category> defaultCategories = List.of(
-                    new Category(null, "Entretenimiento", "#FFFFFF", true, null, null, null, null),
-                    new Category(null, "Salud", "#FFFFFF", true, null, null, null, null),
-                    new Category(null, "Salario", "#FFFFFF", true, null, null, null, null),
-                    new Category(null, "Transporte", "#FFFFFF", true, null, null, null, null),
-                    new Category(null, "Ropa", "#FFFFFF", true, null, null, null, null)
-
-            );
+                    new Category(null, "Groceries", "#FFDFBA", true, null, null, null, null),
+                    new Category(null, "Utilities", "#FFFFBA", true, null, null, null, null),
+                    new Category(null, "Transportation", "#BAE1FF", true, null, null, null, null),
+                    new Category(null, "Entertainment", "#D5AAFF", true, null, null, null, null),
+                    new Category(null, "Healthcare", "#FFDAC1", true, null, null, null, null),
+                    new Category(null, "Clothing", "#C7CEEA", true, null, null, null, null),
+                    new Category(null, "Education", "#FFCBC1", true, null, null, null, null),
+                    new Category(null, "Gifts", "#D0F4DE", true, null, null, null, null),
+                    new Category(null, "Interest", "#D3F8E2", true, null, null, null, null),
+                    new Category(null, "Salary", "#A0E7E5", true, null, null, null, null),
+                    new Category(null, "Other", "#C2F0FC", true, null, null, null, null)
+                    );
 
             categoryRepository.saveAll(defaultCategories);
         }

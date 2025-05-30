@@ -11,9 +11,10 @@ import com.agustin.server.repositories.TransactionRepository;
 import com.agustin.server.services.TransactionService;
 import com.agustin.server.util.AuthenticatedUserProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,7 +30,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public List<TransactionDTO> listTransactions(UUID categoryId, LocalDate startDate, LocalDate endDate) {
+    public List<TransactionDTO> listTransactions(UUID categoryId, LocalDateTime startDate, LocalDateTime endDate) {
 
         User user = authenticatedUserProvider.getAuthenticatedUser();
 

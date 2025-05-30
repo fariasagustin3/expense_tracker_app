@@ -23,9 +23,9 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping(path = "/{id}/me")
-    public UserDTO getProfile(@PathVariable UUID id) {
-        return userService.getProfile(id);
+    @GetMapping(path = "/{email}/me")
+    public UserDTO getProfile(@PathVariable String email) {
+        return userService.getProfile(email);
     }
 
     @PutMapping(path = "/{id}/update")

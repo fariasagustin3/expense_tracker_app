@@ -7,10 +7,12 @@ import com.agustin.server.repositories.TransactionRepository;
 import com.agustin.server.services.ReportService;
 import com.agustin.server.util.AuthenticatedUserProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.YearMonth;
 import java.util.List;
 
@@ -28,8 +30,8 @@ public class ReportServiceImpl implements ReportService {
     public MonthlyReportResponse getMonthlyReport(YearMonth month) {
         User user = authenticatedUserProvider.getAuthenticatedUser();
 
-        LocalDate startDate = month.atDay(1);
-        LocalDate endDate = month.atEndOfMonth();
+        LocalDateTime startDate = month.atDay(1).atStartOfDay();
+        LocalDateTime endDate = month.atEndOfMonth().atTime(LocalTime.MAX);
 
         List<Transaction> transactions = transactionRepository
                 .findByUserIdAndCreatedAtBetween(user.getId(), startDate, endDate);
