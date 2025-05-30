@@ -7,7 +7,7 @@ interface TextInputProps {
   type: string
   name: string
   value: string | number | readonly string[] | undefined
-  required: boolean
+  required?: boolean
 }
 
 const TextInput: React.FC<TextInputProps> = ({ label, placeholder, onChange, type, name, value, required }) => {
