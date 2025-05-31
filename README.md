@@ -127,9 +127,12 @@ The backend provides the following endpoints (via `/api/v1/`):
 
 ### 📸 Screenshots
 
-> *(Coming soon)*
-> You will find here some screenshots of the application in action.
-
+![alt text](/images/image-5.png)
+![alt text](/images/image-4.png)
+![alt text](/images/image.png)
+![alt text](/images/image-1.png)
+![alt text](/images/image-2.png)
+![alt text](/images/image-3.png)
 ---
 
 ### 🤝 Contributing
