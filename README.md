@@ -67,15 +67,10 @@ This project is a **Minimum Viable Product (MVP)** built with **React** and **Sp
    ```bash
    cd client
    ```
-2. Build the Docker image:
+2. Run the docker service:
 
    ```bash
-   docker build -t react-client .
-   ```
-3. Run the container:
-
-   ```bash
-   docker run -p 5173:80 react-client
+   docker compose up
    ```
 
 > The application will be accessible at `http://localhost:5173`.
